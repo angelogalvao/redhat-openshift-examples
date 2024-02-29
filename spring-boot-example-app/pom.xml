@@ -8,26 +8,20 @@
 	<artifactId>spring-boot-example-app</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-	
+
 	<name>spring-boot-example-app</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
+		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>
-   		<maven.compiler.target>11</maven.compiler.target>
-		<dekorate.version>2.11.5.redhat-00017</dekorate.version>
+		<maven.compiler.target>11</maven.compiler.target>
+		<dekorate.version>dekorate.version</dekorate.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
 		<undertow.version>2.2.26.SP2-redhat-00001</undertow.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-			<groupId>io.dekorate</groupId>
-			<artifactId>dekorate-spring-bom</artifactId>
-			<version>${dekorate.version}</version>
-			<type>pom</type>
-			<scope>import</scope>
-			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -65,8 +59,9 @@
 
 		<dependency>
 			<groupId>io.dekorate</groupId>
-			<artifactId>openshift-spring-starter</artifactId>
-		  </dependency>
+			<artifactId>openshift-annotations</artifactId>
+			<version>4.1.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

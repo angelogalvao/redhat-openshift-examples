@@ -38,7 +38,9 @@ oc secrets link --for=pull default docker-registry
 
 * To deploy the application just run the following command:
 
-    ./mvnw clean install -Ddekorate.deploy=true
+```
+./mvnw clean install -Ddekorate.deploy=true
+```
 
 * **IMPORTANT!** The build log can thrown this exception on the logs. **Just ignore it!**
 ```

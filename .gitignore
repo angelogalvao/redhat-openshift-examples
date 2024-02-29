@@ -1,6 +1,5 @@
 .vscode
 .metadata
-.mvn
 bin/
 tmp/
 *.tmp

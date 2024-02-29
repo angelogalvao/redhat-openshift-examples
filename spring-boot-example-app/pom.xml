@@ -74,6 +74,15 @@
 		</dependency>
 	</dependencies>
 
+	<repositories>
+		<repository>
+			<id>red-hat-ga-repository</id>
+			<name>Red Hat GA Repository</name>
+			<url>https://maven.repository.redhat.com/ga</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>

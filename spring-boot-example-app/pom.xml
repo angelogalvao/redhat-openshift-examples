@@ -58,19 +58,18 @@
 		</dependency>
 
 		<!-- This comment dependecy is for the supported Red Hat version -->
-		<!--
+		
 		<dependency>
 			<groupId>io.dekorate</groupId>
 			<artifactId>openshift-spring-starter</artifactId>
 			<version>2.11.5.redhat-00017</version>
 		</dependency>
-		-->
-
-		<dependency>
+		
+		<!-- <dependency>
 			<groupId>io.dekorate</groupId>
 			<artifactId>openshift-annotations</artifactId>
 			<version>${dekorate.version}</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

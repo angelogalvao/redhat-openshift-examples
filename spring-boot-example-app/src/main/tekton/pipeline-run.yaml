@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  labels:
+    tekton.dev/pipeline: spring-boot-example-app-pipeline
+spec:
+  params:
+    - name: GIT_REPO
+      value: 'https://github.com/angelogalvao/redhat-openshift-examples.git'
+    - name: GIT_REVISION
+      value: main
+    - name: CONTEXT_DIR
+      value: spring-boot-example-app
+    - name: DEPLOY_APP_NAME
+      value: spring-boot-example-app
+    - name: DEPLOY_ARTIFACT_NAME
+      value: target/spring-boot-example-app-1.0.0.jar
+  pipelineRef:
+    name: spring-boot-example-app-pipeline
+  workspaces:
+    - name: build
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 100Mi
+    - configMap:
+        name: maven-settings
+      name: maven-settings

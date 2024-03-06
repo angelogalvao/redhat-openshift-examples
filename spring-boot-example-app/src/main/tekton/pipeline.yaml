@@ -1,0 +1,129 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: spring-boot-example-app-pipeline
+spec:
+  params:
+    - default: 'https://github.com/angelogalvao/redhat-openshift-examples.git'
+      name: GIT_REPO
+      type: string
+    - default: main
+      name: GIT_REVISION
+      type: string
+    - default: spring-boot-example-app
+      name: CONTEXT_DIR
+      type: string
+    - default: spring-boot-example-app
+      name: DEPLOY_APP_NAME
+      type: string
+    - default: target/spring-boot-example-app-1.0.0.jar
+      name: DEPLOY_ARTIFACT_NAME
+      type: string
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: $(params.GIT_REPO)
+        - name: revision
+          value: $(params.GIT_REVISION)
+        - name: refspec
+          value: ''
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: crtFileName
+          value: ca-bundle.crt
+        - name: subdirectory
+          value: ''
+        - name: sparseCheckoutDirectories
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+        - name: httpProxy
+          value: ''
+        - name: httpsProxy
+          value: ''
+        - name: noProxy
+          value: ''
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: 'registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:89fc179cd82c8ddf010af89213d3f224b99863fa21deaea5c26ab0b4c214d01b'
+        - name: userHome
+          value: /home/git
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: build
+    - name: maven
+      params:
+        - name: MAVEN_IMAGE
+          value: 'registry.redhat.io/ubi8/openjdk-17@sha256:a8165bc2cd5051a96d6937e25ed03155bbd4b731da6e58cebfe2ea83209c16d8'
+        - name: GOALS
+          value:
+            - package
+        - name: MAVEN_MIRROR_URL
+          value: ''
+        - name: SERVER_USER
+          value: ''
+        - name: SERVER_PASSWORD
+          value: ''
+        - name: PROXY_USER
+          value: ''
+        - name: PROXY_PASSWORD
+          value: ''
+        - name: PROXY_PORT
+          value: ''
+        - name: PROXY_HOST
+          value: ''
+        - name: PROXY_NON_PROXY_HOSTS
+          value: ''
+        - name: PROXY_PROTOCOL
+          value: http
+        - name: CONTEXT_DIR
+          value: $(params.CONTEXT_DIR)
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: maven
+      workspaces:
+        - name: source
+          workspace: build
+        - name: maven-settings
+          workspace: maven-settings
+    - name: openshift-client
+      params:
+        - name: SCRIPT
+          value: |-
+            cd $(params.CONTEXT_DIR)
+            oc import-image registry.access.redhat.com/ubi9/openjdk-11-runtime:latest \
+                            -l app=spring-boot-example-app \
+                            --confirm || echo "IS already exists"
+            oc new-build --name=spring-boot-example-app \
+                        -l app=spring-boot-example-app  \
+                        --binary=true \
+                        --image-stream=openjdk-11-runtime:latest || echo "BC already exists"
+            oc start-build spring-boot-example-app --wait=true \
+                            --from-file=target/spring-boot-example-app-1.0.0.jar
+            oc new-app spring-boot-example-app:latest \
+                        --name spring-boot-example-app || echo "application exists"
+            oc expose svc spring-boot-example-app || echo "route exists"
+        - name: VERSION
+          value: latest
+      runAfter:
+        - maven
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+      workspaces:
+        - name: manifest-dir
+          workspace: build
+  workspaces:
+    - name: build
+    - name: maven-settings

@@ -63,3 +63,4 @@ MANIFEST.MF
 microservice
 .camel-jbang
 .DS_Store
+.quarkus/cli/plugins/quarkus-cli-catalog.json

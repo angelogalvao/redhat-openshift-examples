@@ -1,0 +1,27 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakUser
+metadata:
+  name: test
+  labels:
+    app: rhsso
+spec:
+  user:
+    username: "test"
+    firstName: "Test"
+    lastName: "User"
+    enabled: true
+    emailVerified: false
+    credentials:
+      - type: "password"
+        value: "passwd"
+    realmRoles:
+      - "default-roles-amq-broker-realm"
+    clientRoles:
+      amq-broker:
+        - "consumer"
+        - "producer"
+      realm-management:
+        - "amq-broker-realm"
+  realmSelector:
+    matchLabels:
+      app: rhsso

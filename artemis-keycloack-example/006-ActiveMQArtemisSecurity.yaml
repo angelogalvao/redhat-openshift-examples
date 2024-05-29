@@ -1,0 +1,91 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisSecurity
+metadata:
+  name: rhsso-security
+spec:
+  loginModules:
+    keycloakLoginModules:
+      - configuration:
+          authServerUrl: 'https://keycloak-artemis-keycloak-example.apps.ocp1.home/auth'
+          verifyTokenAudience: true
+          confidentialPort: 0
+          sslRequired: all
+          resource: amq-broker
+          principalAttribute: preferred_username
+          realm: amq-broker-realm
+          useResourceRoleMappings: true
+          enableBasicAuth: true
+          credentials:
+            - key: secret
+              value: amq-broker-secret-value
+        moduleType: directAccess
+        name: login-rhsso-broker-module
+    propertiesLoginModules:
+      - name: prop-module
+  securityDomains:
+    brokerDomain:
+      loginModules:
+        - debug: true
+          flag: required
+          name: login-rhsso-broker-module
+      name: activemq
+  securitySettings:
+    broker:
+      - match: '#'
+        permissions:
+          - operationType: createAddress
+            roles:
+              - admin
+              - consumer
+              - producer
+          - operationType: deleteAddress
+            roles:
+              - admin
+          - operationType: createDurableQueue
+            roles:
+              - admin
+              - consumer
+              - producer
+          - operationType: deleteDurableQueue
+            roles:
+              - admin
+          - operationType: createNonDurableQueue
+            roles:
+              - admin
+              - consumer
+              - producer
+          - operationType: deleteNonDurableQueue
+            roles:
+              - admin
+          - operationType: send
+            roles:
+              - admin
+              - consumer
+              - producer
+          - operationType: consume
+            roles:
+              - admin
+              - consumer
+              - producer
+          - operationType: browse
+            roles:
+              - admin
+              - consumer
+              - producer
+      - match: activemq.management.#
+        permissions:
+          - operationType: createNonDurableQueue
+            roles:
+              - admin
+          - operationType: createAddress
+            roles:
+              - admin
+          - operationType: consume
+            roles:
+              - admin
+          - operationType: manage
+            roles:
+              - admin
+          - operationType: send
+            roles:
+              - admin

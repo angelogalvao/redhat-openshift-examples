@@ -1,0 +1,23 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: ex-aao
+spec:
+  version: 7.10.2
+  deploymentPlan:
+    extraMounts:
+      configMaps:
+        - rhsso-truststore
+    size: 1
+    image: placeholder
+    # Monitoring Properties
+    jolokiaAgentEnabled: true
+    managementRBACEnabled: true
+    initImage: image-registry.openshift-image-registry.svc:5000/artemis-keycloak-example/amq-init:latest
+  upgrades:
+    enabled: false
+    minor: false
+  # Management Console Properties
+  console:
+    expose: true
+    sslEnabled: false

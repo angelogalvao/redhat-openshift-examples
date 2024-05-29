@@ -1,0 +1,15 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: amq-broker-realm
+  labels:
+    app: rhsso
+spec:
+  realm:
+    id: "amq-broker-realm"
+    realm: "amq-broker-realm"
+    enabled: true
+    displayName: "amq-broker-realm"
+  instanceSelector:
+    matchLabels:
+      app: rhsso

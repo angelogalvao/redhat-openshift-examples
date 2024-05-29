@@ -1,0 +1,33 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: example-operators
+  namespace: artemis-keycloak-example
+spec:
+  targetNamespaces:
+  - artemis-keycloak-example
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: amq-broker-rhel8
+  namespace: artemis-keycloak-example
+spec:
+  channel: 7.10.x
+  installPlanApproval: Manual
+  name: amq-broker-rhel8
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: amq-broker-operator.v7.10.2-opr-2-0.1680622941.p
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: rhsso-operator
+  namespace: artemis-keycloak-example
+spec:
+  installPlanApproval: Manual
+  name: rhsso-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: rhsso-operator.7.6.1-opr-005

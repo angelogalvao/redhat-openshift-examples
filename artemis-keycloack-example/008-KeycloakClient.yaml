@@ -1,0 +1,74 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: amq-broker
+  labels:
+    app: rhsso
+spec:
+  realmSelector:
+     matchLabels:
+      app: rhsso
+  roles:
+    - name: admin
+    - name: consumer
+    - name: producer
+  client:
+    clientId: amq-broker
+    name: amq-broker
+    description: amq-broker
+    protocol: openid-connect
+    clientAuthenticatorType: client-secret
+    secret: amq-broker-secret-value
+    standardFlowEnabled: false
+    directAccessGrantsEnabled: true
+    serviceAccountsEnabled: false
+    defaultClientScopes:
+      - email
+      - profile
+      - roles
+      - web-origins
+    optionalClientScopes:
+      - address
+      - microprofile-jwt
+      - offline_access
+      - phone
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: amq-console
+  labels:
+    app: rhsso
+spec:
+  realmSelector:
+     matchLabels:
+      app: rhsso
+  roles:
+    - name: admin
+    - name: viewer
+  client:
+    clientId: amq-console
+    name: amq-console
+    description: amq-console
+    protocol: openid-connect
+    publicClient: true
+    standardFlowEnabled: true
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    redirectUris:
+      - http://ex-aao-wconsj-0-svc-rte-artemis-keycloak-example.apps.ocp1.home/console/*
+    webOrigins:
+      - '+'
+    defaultRoles:
+      - viewer
+    defaultClientScopes:
+      - acr
+      - email
+      - profile
+      - roles
+      - web-origins
+    optionalClientScopes:
+      - address
+      - microprofile-jwt
+      - offline_access
+      - phone

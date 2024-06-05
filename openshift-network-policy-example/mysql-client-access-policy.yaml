@@ -1,0 +1,21 @@
+# This NetworkPolicy is applied to the pods with label equals 'app: mysql-server'
+# It allows access from the project with the label 'network: mysql-network' AND from pods with labels 'app: mysql-client' on port 3306
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: mysql-client-access-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: mysql-server
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network: mysql-network
+      podSelector:  # Notice that is a AND operator. If it was '- podSelector:' it would be OR.
+        matchLabels:
+          app: mysql-client
+    ports:
+    - port: 3306
+      protocol: TCP

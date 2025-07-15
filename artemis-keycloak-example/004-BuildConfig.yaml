@@ -11,7 +11,7 @@ spec:
   failedBuildsHistoryLimit: 1
   source:
     dockerfile: |-
-      FROM registry.redhat.io/amq7/amq-broker-init-rhel8:7.10-38.1675807822
+      FROM registry.redhat.io/amq7/amq-broker-init-rhel8:7.11.6'
       USER root
       RUN mkdir -p /amq/scripts/
       RUN cp /opt/custom/post-config.sh /amq/scripts/post-config.sh \
@@ -21,7 +21,7 @@ spec:
   - imageChange:
       from:
         kind: ImageStreamTag
-        name: amq-broker-init-rhel8:7.10-38.1675807822
+        name: amq-broker-init-rhel8:7.11.6'
         namespace: example
     type: ImageChange
   strategy:
@@ -29,7 +29,7 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'amq-broker-init-rhel8:7.10-38.1675807822'
+        name: 'amq-broker-init-rhel8:7.11.6'
       volumes:
         - name: post-config
           source:

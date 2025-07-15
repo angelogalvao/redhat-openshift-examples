@@ -30,3 +30,17 @@ oc create -f .
 ## Build the Init Contianer
 
 oc start-build amq-init
+
+
+
+## It is always failing to delete the project - run this:
+
+oc get namespace artemis-keycloak-example -o json > tmp_ns.json
+
+- Remove the line with "kubernetes" (under "finalizers"):
+
+oc proxy &
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @tmp_ns.json http://127.0.0.1:8001/api/v1/namespaces/artemis-keycloak-example/finalize
+
+
+# oc get namespace $NS_TO_DELETE -o json | jq '.spec = {"finalizers":[]}' > tmp_ns.json

@@ -6,7 +6,7 @@ spec:
   loginModules:
     keycloakLoginModules:
       - configuration:
-          authServerUrl: 'https://keycloak-artemis-keycloak-example.apps.ocp1.home/auth'
+          authServerUrl: 'https://keycloak-artemis-keycloak-example.apps.asouza01.lab.upshift.rdu2.redhat.com/auth'
           verifyTokenAudience: true
           confidentialPort: 0
           sslRequired: all
@@ -20,8 +20,26 @@ spec:
               value: amq-broker-secret-value
         moduleType: directAccess
         name: login-rhsso-broker-module
+      - configuration:
+          authServerUrl: 'https://keycloak-artemis-keycloak-example.apps.asouza01.lab.upshift.rdu2.redhat.com/auth'
+          verifyTokenAudience: false
+          confidentialPort: 0
+          sslRequired: all
+          resource: amq-console
+          principalAttribute: preferred_username
+          realm: amq-broker-realm
+          useResourceRoleMappings: true
+          enableBasicAuth: true
+          publicClient: true
+        moduleType: bearerToken
+        name: login-keycloak-console-module
     propertiesLoginModules:
       - name: prop-module
+        users:
+          - name: "sam"
+            password: "samspassword"
+            roles:
+              - "admin"
   securityDomains:
     brokerDomain:
       loginModules:
@@ -29,6 +47,15 @@ spec:
           flag: required
           name: login-rhsso-broker-module
       name: activemq
+    consoleDomain:
+      loginModules:
+        - debug: true
+          flag: sufficient
+          name: login-keycloak-console-module
+        - debug: true
+          flag: required
+          name: prop-module
+      name: console
   securitySettings:
     broker:
       - match: '#'
@@ -89,3 +116,38 @@ spec:
           - operationType: send
             roles:
               - admin
+    management:
+      authorisation:
+        allowedList:
+          - domain: hawtio
+        roleAccess:
+          - accessList:
+              - method: list*
+                roles:
+                  - admin
+                  - viewer
+              - method: get*
+                roles:
+                  - admin
+                  - viewer
+              - method: is*
+                roles:
+                  - admin
+                  - viewer
+              - method: set*
+                roles:
+                  - admin
+              - method: browse*
+                roles:
+                  - admin
+              - method: count*
+                roles:
+                  - admin
+              - method: '*'
+                roles:
+                  - admin
+            domain: org.apache.activemq.artemis
+    hawtioRoles:
+        - admin
+        - viewer
+

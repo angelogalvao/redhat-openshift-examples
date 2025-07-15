@@ -56,7 +56,7 @@ spec:
     directAccessGrantsEnabled: false
     serviceAccountsEnabled: false
     redirectUris:
-      - http://ex-aao-wconsj-0-svc-rte-artemis-keycloak-example.apps.ocp1.home/console/*
+      - http://ex-aao-wconsj-0-svc-rte-artemis-keycloak-example.apps.asouza01.lab.upshift.rdu2.redhat.com/console/*
     webOrigins:
       - '+'
     defaultRoles:

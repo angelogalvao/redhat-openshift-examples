@@ -1,0 +1,79 @@
+version: 1
+
+# Entry 1: cn=admin,dc=your,dc=company,dc=com
+dn: cn=admin,dc=your,dc=company,dc=com
+changetype: add
+cn: admin
+displayname: User 1
+givenname: User
+mail: admin@your.company.com
+objectclass: inetOrgPerson
+sn: 1
+userpassword: admin
+
+# Entry 2: cn=user2,dc=your,dc=company,dc=com
+dn: cn=user2,dc=your,dc=company,dc=com
+changetype: add
+cn: user2
+displayname: User 2
+givenname: User
+mail: user2@your.company.com
+objectclass: inetOrgPerson
+sn: 2
+userpassword: 1234
+
+# Entry 3: cn=reader,dc=your,dc=company,dc=com
+dn: cn=reader,dc=your,dc=company,dc=com
+changetype: add
+cn: reader
+displayname: Reader
+givenname: User
+mail: reader@your.company.com
+objectclass: inetOrgPerson
+sn: 3
+userpassword: 1234
+
+# Entry 3: ou=Groups,dc=your,dc=company,dc=com
+dn: ou=Groups,dc=your,dc=company,dc=com
+changetype: add
+objectclass: organizationalUnit
+ou: Groups
+
+# Entry 4: cn=admin,ou=Groups,dc=your,dc=company,dc=com
+dn: cn=admin,ou=Groups,dc=your,dc=company,dc=com
+changetype: add
+cn: admin
+objectclass: groupOfUniqueNames
+uniquemember: cn=admin,dc=your,dc=company,dc=com
+uniquemember: cn=user2,dc=your,dc=company,dc=com
+
+# Entry 5: cn=readers,ou=Groups,dc=your,dc=company,dc=com
+dn: cn=readers,ou=Groups,dc=your,dc=company,dc=com
+changetype: add
+cn: readers
+objectclass: groupOfUniqueNames
+uniquemember: cn=reader,dc=your,dc=company,dc=com
+
+# Entry 6: ou=policies,dc=your,dc=company,dc=com
+dn: ou=policies,dc=your,dc=company,dc=com
+changetype: add
+objectclass: organizationalUnit
+ou: policies
+
+# Entry 7: cn=default,ou=policies,dc=your,dc=company,dc=com
+dn: cn=default,ou=policies,dc=your,dc=company,dc=com
+changetype: add
+cn: default
+objectclass: organizationalRole
+objectclass: pwdPolicy
+objectclass: top
+pwdattribute: 2.5.4.35
+pwdcheckquality: 2
+pwdminlength: 4
+pwdmustchange: TRUE
+
+# Entry 8: ou=Users,dc=your,dc=company,dc=com
+dn: ou=Users,dc=your,dc=company,dc=com
+changetype: add
+objectclass: organizationalUnit
+ou: Users

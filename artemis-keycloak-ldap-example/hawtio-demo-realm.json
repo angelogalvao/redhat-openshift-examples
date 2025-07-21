@@ -8,8 +8,7 @@
       "clientId": "amq-console",
       "enabled": true,
       "redirectUris": [
-        "http://ex-aao-wconsj-0-svc-rte-amq-keycloak-project.apps.ocp1.home/*",
-        "http://ex-aao-wconsj-1-svc-rte-amq-keycloak-project.apps.ocp1.home/*"
+        "http://ex-aao-wconsj-0-svc-rte-amq-keycloak-project.apps.ocp1.home/*"
       ],
       "webOrigins": ["+"],
       "bearerOnly": false,

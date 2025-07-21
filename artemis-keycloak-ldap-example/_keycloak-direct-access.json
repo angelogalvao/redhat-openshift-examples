@@ -1,0 +1,11 @@
+{
+    "realm": "amq-broker-ldap",
+    "resource": "amq-broker",
+    "auth-server-url": "https://keycloak-artemis.ocp1.home",
+    "principal-attribute": "preferred_username",
+    "use-resource-role-mappings": false,
+    "ssl-required": "external",
+    "credentials": {
+        "secret": "Lfk6g1ZKlGzNT6eRkz0d1scM4M29Ohmn"
+    }
+}

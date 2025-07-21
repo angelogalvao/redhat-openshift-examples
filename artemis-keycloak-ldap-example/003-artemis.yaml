@@ -1,0 +1,24 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: ex-aao
+spec:
+  console:
+    expose: true
+  deploymentPlan:
+    size: 2
+    persistenceEnabled: false
+    requireLogin: false
+    messageMigration: false
+    extraMounts:
+      configMaps:
+        - newlog4j-logging-config
+      secrets:
+        - sso-jaas-config
+    managementRBACEnabled: true
+    journalType: nio
+    jolokiaAgentEnabled: false
+    image: placeholder
+  env:
+    - name: JAVA_ARGS_APPEND
+      value: '-Djavax.net.ssl.trustStore=/amq/extra/secrets/sso-jaas-config/truststore.jks -Djavax.net.ssl.trustStorePassword=password -Dhawtio.rolePrincipalClasses=org.apache.activemq.artemis.spi.core.security.jaas.RolePrincipal -Dhawtio.keycloakEnabled=true -Dhawtio.keycloakClientConfig=/amq/extra/secrets/sso-jaas-config/_keycloak-js-client.json -Dhawtio.authenticationEnabled=true -Dhawtio.realm=console'

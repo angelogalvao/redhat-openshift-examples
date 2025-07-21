@@ -64,3 +64,7 @@ microservice
 .camel-jbang
 .DS_Store
 .quarkus/cli/plugins/quarkus-cli-catalog.json
+artemis-keycloak-ldap-example/certificate.pem
+artemis-keycloak-ldap-example/key.pem
+artemis-keycloak-ldap-example/truststore.jks
+artemis-keycloak-ldap-example/certificate.crt

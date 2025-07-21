@@ -1,0 +1,5 @@
+{
+  "realm": "amq-broker-ldap",
+  "clientId": "amq-console",
+  "url": "https://keycloak-artemis.ocp1.home"
+}

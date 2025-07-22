@@ -14,7 +14,6 @@ oc apply -f 001-database.yaml
 openssl req -subj '/CN=keycloak-artemis.ocp1.home/O=Test Keycloak Artemis./C=US' -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
 openssl x509 -outform der -in certificate.pem -out certificate.crt
 keytool -import -noprompt -file certificate.crt -alias keycloak-artemis.ocp1.home -keystore truststore.jks -storepass password
-oc create secret generic 
 ~~~
 
 3. Database credentials secret (The values are configured in 001-database.yaml )

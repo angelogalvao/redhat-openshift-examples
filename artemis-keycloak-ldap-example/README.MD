@@ -35,8 +35,8 @@ oc apply -f 002-keycloak.yaml
 5. Get the temporary user and password
 
 ~~~
-oc get secret example-kc-initial-admin -o jsonpath='{.data.username}' | base64 --decode
-oc get secret example-kc-initial-admin -o jsonpath='{.data.password}' | base64 --decode
+oc get secret artemis-kc-initial-admin -o jsonpath='{.data.username}' | base64 --decode
+oc get secret artemis-kc-initial-admin -o jsonpath='{.data.password}' | base64 --decode
 ~~~
 
 6. Deploy the demo realm
@@ -52,9 +52,11 @@ oc get secret example-kc-initial-admin -o jsonpath='{.data.password}' | base64 -
 - Edit files _keycloak-bearer-token.json, _keycloak-direct-access.json and _keycloak-js-client.json and change the Keycloak URL to the route URL of your keycloak installation. 
 - Create the secrets:
 ~~~
-keytool -import -noprompt -file certificate.crt -alias keycloak-artemis.ocp1.home -keystore truststore.jks -storepass password
-oc create secret generic sso-jaas-config --from-file=login.config --from-file=_keycloak-bearer-token.json --from-file=_keycloak-direct-access.json --from-file=_keycloak-js-client.json --from-file=truststore.jks
+oc extract secret/keycloak-tls-secret --keys=tls.crt  --confirm
+keytool -import -noprompt -file tls.crt -alias keycloak-artemis.ocp1.home -keystore _truststore.jks -storepass password
+oc create secret generic sso-jaas-config --from-file=login.config --from-file=_keycloak-bearer-token.json --from-file=_keycloak-direct-access.json --from-file=_keycloak-js-client.json --from-file=_truststore.jks
 ~~~
+Be sure that you are using JDK 17 version of keytool
 
 2. Configure logging.properties config map
 

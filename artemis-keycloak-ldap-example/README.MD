@@ -41,13 +41,13 @@ oc get secret artemis-kc-initial-admin -o jsonpath='{.data.password}' | base64 -
 
 6. Deploy the demo realm
 
-- Edit the file hawtio-demo-realm.json and change the redirectUris listed in the file to the URL of AMQ console of you environment. 
-- Create a new realm by importing the file hawtio-demo-realm.json in the Keycloak web console 
+- Edit the file `hawtio-demo-realm.json` and change the *redirectUris* listed in the file to the URL of AMQ console of you environment. 
+- Create a new realm by importing the file `hawtio-demo-realm.json` in the Keycloak web console 
 
 ## Install AMQ
 
 
-1. Configure login.config secret 
+1. Configure sso-jaas-config secret 
 
 - Edit files _keycloak-bearer-token.json, _keycloak-direct-access.json and _keycloak-js-client.json and change the Keycloak URL to the route URL of your keycloak installation. 
 - Create the secrets:

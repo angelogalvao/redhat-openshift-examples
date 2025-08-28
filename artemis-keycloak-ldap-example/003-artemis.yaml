@@ -3,8 +3,13 @@ kind: ActiveMQArtemis
 metadata:
   name: ex-aao
 spec:
+  brokerProperties:
+    - securityRoles.#.producers.send=true
+    - securityRoles.#.consumers.consume=true
   console:
     expose: true
+    sslEnabled: true
+    sslSecret: console-tls-secret
   deploymentPlan:
     size: 1
     persistenceEnabled: false
@@ -14,6 +19,7 @@ spec:
       configMaps:
         - newlog4j-logging-config
       secrets:
+        - console-tls-secret
         - sso-jaas-config
     managementRBACEnabled: true
     journalType: nio

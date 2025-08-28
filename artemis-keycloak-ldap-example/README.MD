@@ -12,7 +12,6 @@ oc apply -f 001-database.yaml
 
 ~~~
 openssl req -subj '/CN=keycloak-artemis.ocp1.home/O=Test Keycloak Artemis./C=US' -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
-openssl x509 -outform der -in certificate.pem -out certificate.crt
 oc create secret tls keycloak-tls-secret --cert certificate.pem --key key.pem
 ~~~
 
@@ -62,6 +61,19 @@ Be sure that you are using JDK 17 version of keytool
 
 ~~~
 oc create cm newlog4j-logging-config --from-file=logging.properties
+~~~
+
+3. Create the web console certificate
+
+~~~
+keytool -genkey -alias broker -keyalg RSA -keystore broker.ks
+keytool -export -alias broker -keystore broker.ks -file broker_cert.pem
+keytool -import -alias broker -keystore client.ts -file broker_cert.pem
+oc create secret generic console-tls-secret \
+--from-file=broker.ks=broker.ks \
+--from-file=client.ts=client.ts \
+--from-literal=keyStorePassword=password \
+--from-literal=trustStorePassword=password
 ~~~
 
 3. Deploy ActiveMQ Artemis 
